@@ -14,5 +14,6 @@ def index():
 
 @app.route('/change_ip', methods=['POST'])
 def change_ip():
-    print request.form
-    return index()
+    #print request.form
+    #return index()
+    return "192.168.1.1"

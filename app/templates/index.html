@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>IP管理页面</title>
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#submit_btn_1").click(function () {
+                var host = $("#host1").val()
+                $.ajax({
+                   type:'get',
+                    url:'http://47.92.68.91:8888',
+                    data:{
+                      hostname: host
+                    },
+                    async:false,
+                    dataType:'text',
+                    success:function () {
+                      console.log("####send request###")
+                    },
+                    complete:function (result) {
+                       console.log(result)
+                        $("#ip_1").val($.trim(result))
+                    }
+                });
+            })
+        })
+    </script>
+</head>
+<body>
+<form>
+    <table>
+        <tr>
+            <th>主机</th>
+            <th>IP</th>
+            <th>操作</th>
+        </tr>
+        <tr>
+            <td><input type="text" name="hostname" id="host1" value=""></td>
+            <td><input type="text" readonly="readonly" id="ip_1"></td>
+            <td><input type="submit" id="submit_btn_1" value="拨号更换"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
