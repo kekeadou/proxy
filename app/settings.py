@@ -1,12 +1,12 @@
 
 
 # hosts
-password = '221228'
+password = 'vanee'
 
 hosts = [
     {
         'name': 'host1',
         'ip': '10.120.12.12',
-        'ssh': 'root@180.100.240.12:20249',
+        'ssh': 'root@lydx1.leyuyun.com:20236',
     },
 ]
