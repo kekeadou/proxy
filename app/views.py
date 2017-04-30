@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, request
+from flask import render_template, request, Response
 from app import app
 from settings import hosts
 
@@ -14,6 +14,13 @@ def index():
 
 @app.route('/change_ip', methods=['POST'])
 def change_ip():
-    #print request.form
-    #return index()
-    return "192.168.1.1"
+    hostname=request.args.get('hostname')
+    if hostname=='123':
+        resp = Response("192.168.1.1")
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+    else:
+        resp = Response("192.168.1.2")
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+

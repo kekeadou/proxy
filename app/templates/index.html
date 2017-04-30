@@ -8,24 +8,36 @@
         $(function () {
             $("#submit_btn_1").click(function () {
                 var host = $("#host1").val()
-                $.ajax({
-                   type:'get',
-                    url:'http://47.92.68.91:8888',
-                    data:{
-                      hostname: host
-                    },
-                    async:false,
-                    dataType:'text',
-                    success:function () {
-                      console.log("####send request###")
-                    },
-                    complete:function (result) {
-                       console.log(result)
-                        $("#ip_1").val($.trim(result))
-                    }
-                });
+                console.log("host="+host)
+                var result_ip  = get_result(host)
+                console.log("result_ip=="+result_ip)
+                $("#ip_1").val(result_ip)
             })
-        })
+        });
+
+        function get_result(host) {
+
+            var result_ip=''
+            $.ajax({
+                type:'post',
+                url:'http://127.0.0.1:5000/change_ip',
+                data:{
+                    hostname: host
+                },
+                async:false,
+                dataType:'text',
+                success:function () {
+                    console.log("####send request###")
+                },
+                complete:function (result) {
+                    console.log(result)
+                    console.log(result.responseText)
+                    //$("#changed_ip").val($.trim(result.responseText))
+                    result_ip=($.trim(result.responseText))
+                }
+            });
+            return result_ip;
+        }
     </script>
 </head>
 <body>
@@ -37,11 +49,12 @@
             <th>操作</th>
         </tr>
         <tr>
-            <td><input type="text" name="hostname" id="host1" value=""></td>
-            <td><input type="text" readonly="readonly" id="ip_1"></td>
-            <td><input type="submit" id="submit_btn_1" value="拨号更换"></td>
+            <td><input type="text" name="hostname" id="host1"></td>
+            <td><textarea  id="ip_1"></textarea></td>
+            <td><input type="button" id="submit_btn_1" value="拨号更换"></td>
         </tr>
     </table>
+
 </form>
 </body>
 </html>
