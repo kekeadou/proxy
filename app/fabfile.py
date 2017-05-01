@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from fabric.api import cd, run, env, parallel, execute, hide, settings
+from fabric.api import cd, env, run, parallel, execute, hide, settings
 import re
 import time
 
@@ -23,14 +23,13 @@ def remote_change():
 
 
 def change_proxy(hosts, password):
-    env.hosts = hosts
-    env.password = password
-    return execute(remote_change)
+    return execute(remote_change, hosts=hosts)
 
 
 if __name__ == "__main__":
 
     from settings import hosts, password
     hosts = [host['ssh'] for host in hosts]
+    env.password = password
 
     print change_proxy(hosts, password)
