@@ -3,58 +3,50 @@
 <html>
 <head>
     <title>IP管理页面</title>
-    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $("#submit_btn_1").click(function () {
-                var host = $("#host1").val()
-                console.log("host="+host)
-                var result_ip  = get_result(host)
-                console.log("result_ip=="+result_ip)
-                $("#ip_1").val(result_ip)
-            })
-        });
-
-        function get_result(host) {
-
-            var result_ip=''
-            $.ajax({
-                type:'post',
-                url:'http://127.0.0.1:5000/change_ip',
-                data:{
-                    hostname: host
-                },
-                async:false,
-                dataType:'text',
-                success:function () {
-                    console.log("####send request###")
-                },
-                complete:function (result) {
-                    console.log(result)
-                    console.log(result.responseText)
-                    //$("#changed_ip").val($.trim(result.responseText))
-                    result_ip=($.trim(result.responseText))
-                }
-            });
-            return result_ip;
-        }
-    </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.2.1.min.js') }}"></script>
 </head>
 <body>
-<form>
-    <table>
+    <table border="1">
         <tr>
             <th>主机</th>
             <th>IP</th>
             <th>操作</th>
         </tr>
-        <tr>
-            <td><input type="text" name="hostname" id="host1"></td>
-            <td><textarea  id="ip_1"></textarea></td>
-            <td><input type="button" id="submit_btn_1" value="拨号更换"></td>
+        {% for host in hosts %}
+        <tr align="middle">
+            <td width="80" class="host">{{ host.name }}</td>
+            <td width="130" class="ip">{{ host.ip }}</td>
+            <td><input type="button" onclick="change_ip(this)" value="拨号更换"></td>
         </tr>
+        {% endfor %}
     </table>
 
-</form>
 </body>
+
+<script type="text/javascript">
+    function change_ip(elem){
+        tr = $(elem).parents("tr");
+        host_name = tr.children("td.host").text();
+        ip = tr.children("td.ip");
+        var result_ip = get_result(host_name);
+        ip.text(result_ip);
+    };
+
+    function get_result(host) {
+        var result_ip='';
+        $.ajax({
+            type:'post',
+            url:'/change_ip',
+            data:{
+                hostname: host
+            },
+            async:false,
+            dataType:'text',
+            complete:function (result) {
+                result_ip=($.trim(result.responseText))
+            }
+        });
+        return result_ip;
+    }
+</script>
 </html>
